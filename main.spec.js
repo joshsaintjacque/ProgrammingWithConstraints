@@ -48,6 +48,18 @@ describe('Main', () => {
   });
 
   describe('setLocationPath()', () => {
-    it('sets the path based on the selected options', () => {});
+    it('sets the path based on the selected options', () => {
+      document.querySelector('#project').value = 'calculator';
+      document.querySelector('#platform').value = 'web-app';
+      document.querySelector('#language').value = 'javascript';
+      document.querySelector('#twist').value = 'without-dependencies';
+
+      setLocationPath();
+
+      return expect(
+        window.location.pathname,
+        '/calculator/web-app/javascript/without-dependencies',
+      );
+    });
   });
 });

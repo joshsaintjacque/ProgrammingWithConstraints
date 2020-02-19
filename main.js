@@ -6,7 +6,28 @@ function randomize() {
   document.querySelectorAll('select').forEach(select => {
     setSelectWithRandomValue(select);
     updateSelectWidth(select);
+    setLocationPath();
   });
+}
+
+function setLocationPath() {
+  const selectedProject = document.querySelector('#project').value;
+  const selectedPlatform = document.querySelector('#platform').value;
+  const selectedLanguage = document.querySelector('#language').value;
+  const selectedTwist = document.querySelector('#twist').value;
+
+  const state = {
+    selectedProject,
+    selectedPlatform,
+    selectedLanguage,
+    selectedTwist,
+  };
+
+  window.history.replaceState(
+    state,
+    'Constraints.app',
+    `/${selectedProject}/${selectedPlatform}/${selectedLanguage}/${selectedTwist}`,
+  );
 }
 
 function setSelectWithRandomValue(select) {

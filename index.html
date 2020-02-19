@@ -1,68 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>constraints.app</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript" src="main.js"></script>
+    <script type="module" src="main.spec.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P|Quicksand&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Constraints</title>
-  <link rel="stylesheet" href="styles.css">
-  <script type="text/javascript" src="main.js"></script>
-  <script type="module" src="main.spec.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P|Quicksand&display=swap" rel="stylesheet">
-</head>
+  <body>
+    <div class="constraints">
+      <div class="constraints__options">
+        <h1 class="constraints__title">constraints.app</h1>
 
-<body>
-  <div class="constraints">
-    <div class="constraints__options">
-      <h1 class="constraints__title">constraints.app</h1>
+        <div class="constraint">
+          <label for="project">Build a</label>
+          <select id="project" class="constraint__value">
+            <option value="binary-to-decimal-converter"
+              >Binary-to-decimal converter</option
+            >
+            <option value="border-radius-previewer"
+              >Border Radius Previewer</option
+            >
+            <option value="calculator">Calculator</option>
+          </select>
+        </div>
 
-      <div class="constraint">
-        <label for="project">Build a</label>
-        <select id="project" class="constraint__value">
-          <option value="binary-to-decimal-converter">Binary-to-decimal converter</option>
-          <option value="border-radius-previewer">Border Radius Previewer</option>
-          <option value="calculator">Calculator</option>
-        </select>
+        <div class="constraint">
+          <label for="platform">as a</label>
+          <select id="platform" class="constraint__value">
+            <option value="command-line-program">command line program</option>
+            <option value="web-app">web app</option>
+            <option value="ios-app">iOS app</option>
+            <option value="android-app">android app</option>
+            <option value="desktop-application">desktop application</option>
+            <option value="browser-extension">browser Extension</option>
+            <option value="chat-bot">chat bot</option>
+          </select>
+        </div>
+
+        <div class="constraint">
+          <label for="language">in</label>
+          <select id="language" class="constraint__value">
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="ruby">Ruby</option>
+          </select>
+        </div>
+
+        <div class="constraint">
+          <label for="twist">but</label>
+          <select id="twist" class="constraint__value">
+            <option value="in-less-than-1kb">in less than 1kb</option>
+            <option value="in-less-than-5kb">in less than 5kb</option>
+            <option value="finish-in-1-hour">finish in 1 hour</option>
+            <option value="finish-in-2-hours">finish in 2 hours</option>
+            <option value="finish-in-4-hours">finish in 4 hours</option>
+            <option value="without-dependencies">without dependencies</option>
+          </select>
+        </div>
       </div>
 
-      <div class="constraint">
-        <label for="platform">as a</label>
-        <select id="platform" class="constraint__value">
-          <option value="command-line-program">command line program</option>
-          <option value="web-app">web app</option>
-          <option value="ios-app">iOS app</option>
-          <option value="android-app">android app</option>
-          <option value="desktop-application">desktop application</option>
-          <option value="browser-extension">browser Extension</option>
-          <option value="chat-bot">chat bot</option>
-        </select>
-      </div>
-
-      <div class="constraint">
-        <label for="language">in</label>
-        <select id="language" class="constraint__value">
-          <option value="javascript">JavaScript</option>
-          <option value="typescript">TypeScript</option>
-          <option value="ruby">Ruby</option>
-        </select>
-      </div>
-
-      <div class="constraint">
-        <label for="twist">but</label>
-        <select id="twist" class="constraint__value">
-          <option value="in-less-than-1kb">in less than 1kb</option>
-          <option value="in-less-than-5kb">in less than 5kb</option>
-          <option value="finish-in-1-hour">finish in 1 hour</option>
-          <option value="finish-in-2-hours">finish in 2 hours</option>
-          <option value="finish-in-4-hours">finish in 4 hours</option>
-          <option value="without-dependencies">without dependencies</option>
-        </select>
-      </div>
+      <button onclick="randomize()" class="constraints__button">
+        Randomize
+      </button>
     </div>
-
-    <button onclick="randomize()" class="constraints__button">Randomize</button>
-  </div>
-
-</body>
-
+  </body>
 </html>
