@@ -1,4 +1,9 @@
 export function describe(name, callback) {
+  const url = new URL(window.location);
+  const isTestRun = url.searchParams.get('runTests');
+
+  if (isTestRun === null) return;
+
   console.log(`${buildLeadingWhitespace()} ${name}`);
   callback();
 }
