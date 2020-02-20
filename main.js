@@ -16,18 +16,13 @@ function setLocationPath() {
   const selectedLanguage = document.querySelector('#language').value;
   const selectedTwist = document.querySelector('#twist').value;
 
-  const state = {
-    selectedProject,
-    selectedPlatform,
-    selectedLanguage,
-    selectedTwist,
-  };
+  const url = new URL(window.location);
+  url.searchParams.set('project', selectedProject);
+  url.searchParams.set('platform', selectedPlatform);
+  url.searchParams.set('language', selectedLanguage);
+  url.searchParams.set('twist', selectedTwist);
 
-  window.history.replaceState(
-    state,
-    'Constraints.app',
-    `/${selectedProject}/${selectedPlatform}/${selectedLanguage}/${selectedTwist}`,
-  );
+  window.history.replaceState({}, 'constraints.app', `/?${url.searchParams}`);
 }
 
 function setSelectWithRandomValue(select) {
