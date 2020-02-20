@@ -1,3 +1,13 @@
+function onLoad() {
+  addEventListeners();
+
+}
+
+function addEventListeners() {
+  const randomizeButton = document.querySelector('.constraints__button');
+  randomizeButton.addEventListener('click', randomize);
+}
+
 /**
  * Randomizes the value of all select boxes on the page from the list
  * of available options within each select box.
@@ -64,3 +74,5 @@ function getTextRenderedWidth(text) {
   span.remove();
   return `${width}px`;
 }
+
+document.addEventListener('DOMContentLoaded', onLoad);
