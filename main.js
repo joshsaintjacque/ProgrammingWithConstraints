@@ -1,11 +1,21 @@
 function onLoad() {
   addEventListeners();
-
+  setAppStateFromParams();
 }
 
 function addEventListeners() {
   const randomizeButton = document.querySelector('.constraints__button');
   randomizeButton.addEventListener('click', randomize);
+}
+
+function setAppStateFromParams() {
+  const url = new URL(window.location);
+  ['project', 'platform', 'language', 'twist'].forEach(param => {
+    const data = url.searchParams.get(param);
+    if (data) {
+      document.querySelector(`#${param}`).value = data;
+    }
+  });
 }
 
 /**
