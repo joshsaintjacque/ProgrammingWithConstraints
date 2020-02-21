@@ -3,9 +3,17 @@ function onLoad() {
   setAppStateFromParams();
 }
 
+function onChange() {
+  setLocationPath();
+}
+
 function addEventListeners() {
   const randomizeButton = document.querySelector('.constraints__button');
   randomizeButton.addEventListener('click', randomize);
+
+  document.querySelectorAll('select').forEach(select => {
+    select.addEventListener('change', onChange);
+  });
 }
 
 function setAppStateFromParams() {
