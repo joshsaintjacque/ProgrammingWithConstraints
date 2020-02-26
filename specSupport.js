@@ -30,8 +30,13 @@ function getCallstackDepth(adjuster = 1) {
   );
 }
 
-export function expect(value, expectation) {
-  if (value === expectation) return true;
-  console.warn(`Expected ${value} to equal ${expectation}`);
-  return false;
+export function expect(value) {
+  function toBe(expectation) {
+    if (value === expectation) return true;
+    console.warn(`Expected ${value} to equal ${expectation}`);
+  }
+
+  return {
+    toBe,
+  };
 }

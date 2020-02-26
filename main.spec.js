@@ -12,7 +12,7 @@ describe('Main', () => {
         select => select.value,
       ).length;
 
-      return expect(numberOfSelectsWithValuesSet, 4);
+      return expect(numberOfSelectsWithValuesSet).toBe(4);
     });
   });
 
@@ -22,7 +22,7 @@ describe('Main', () => {
         localStorage.setItem('state', JSON.stringify({ name: 'test state' }));
         initializeApplicationState();
         const newState = JSON.parse(localStorage.getItem('state'));
-        return expect(newState.name, 'test state');
+        return expect(newState.name).toBe('test state');
       });
     });
 
@@ -31,7 +31,7 @@ describe('Main', () => {
         localStorage.clear();
         initializeApplicationState();
         const newState = JSON.parse(localStorage.getItem('state'));
-        return expect(newState.languages[0].name, 'Any Language');
+        return expect(newState.languages[0].name).toBe('Any Language');
       });
     });
   });
@@ -45,8 +45,7 @@ describe('Main', () => {
 
       setLocationPath();
 
-      return expect(
-        window.location.pathname,
+      return expect(window.location.pathname).toBe(
         '/calculator/web-app/javascript/without-dependencies',
       );
     });
