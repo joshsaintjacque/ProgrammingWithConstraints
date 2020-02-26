@@ -62,18 +62,48 @@ function setAppStateFromParams() {
 }
 
 /**
- * Randomizes the value of all select boxes on the page from the list
- * of available options within each select box.
+ * Randomizes the value of all select boxes on the page several times in an
+ * async process (setInterval). For testability we also randomize the fields
+ * once immediately.
+ *
+ * While the fields are being randomized the randomize button is disabled.
  */
-function randomize() {
+export function randomize() {
+  const randomizeButton = document.querySelector('.button__randomize');
+  randomizeButton.disabled = true;
+  randomizeFields();
+
+  let iteration = 0;
+  const interval = setInterval(() => {
+    randomizeFields();
+
+    if (iteration > 5) {
+      clearInterval(interval);
+      randomizeButton.disabled = false;
+    }
+
+    iteration += 1;
+  }, 250);
+}
+
+/**
+ * Randomizes the value of all select boxes on the page from the list
+ * of available options in local storage within each select box.
+ */
+function randomizeFields() {
+  const state = JSON.parse(localStorage.getItem('state'));
+
   document.querySelectorAll('select').forEach(select => {
+    const field = select.id;
+    const { isLocked } = state.fields[field];
+    if (isLocked) return;
+
     setSelectWithRandomValue(select);
-    updateSelectWidth(select);
     setLocationPath();
   });
 }
 
-function setLocationPath() {
+export function setLocationPath() {
   const selectedProject = document.querySelector('#project').value;
   const selectedPlatform = document.querySelector('#platform').value;
   const selectedLanguage = document.querySelector('#language').value;
@@ -88,16 +118,15 @@ function setLocationPath() {
   window.history.replaceState({}, 'constraints.app', `/?${url.searchParams}`);
 }
 
+/**
+ * Sets the provided select element to one of its options at random.
+ *
+ * @param {HTMLSelectElement} select
+ */
 function setSelectWithRandomValue(select) {
-  const values = Array.from(select.querySelectorAll('option')).map(
-    option => option.value,
-  );
+  const values = Array.from(select.querySelectorAll('option')).map(option => option.value);
 
   select.value = sample(values);
-}
-
-function updateSelectWidth(select) {
-  select.style.width = `${getTextRenderedWidth(select.value)}`;
 }
 
 /**
@@ -107,25 +136,6 @@ function updateSelectWidth(select) {
  */
 function sample(array) {
   return array[Math.floor(Math.random() * array.length)];
-}
-
-/**
- * Returns the width of the text provided, as measured in pixels.
- * This is accomplished by temporarily rendering the text to the screen
- * for the purposes of taking the measurement, then removing the element.
- *
- * This is an ungodly hack. It's tightly coupled to styling.
- *
- * @param text The string to be measured.
- */
-function getTextRenderedWidth(text) {
-  const span = document.createElement('span');
-  span.innerHTML = text;
-  span.className = 'constraint constraints constraint__value';
-  document.body.appendChild(span);
-  const width = span.offsetWidth + 5;
-  span.remove();
-  return `${width}px`;
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);

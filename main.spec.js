@@ -20,7 +20,9 @@ describe('Main', () => {
     describe('when the state already exists', () => {
       it('does not overwrite the existing state', () => {
         localStorage.setItem('state', JSON.stringify({ name: 'test state' }));
+
         initializeApplicationState();
+
         const newState = JSON.parse(localStorage.getItem('state'));
         return expect(newState.name).toBe('test state');
       });
