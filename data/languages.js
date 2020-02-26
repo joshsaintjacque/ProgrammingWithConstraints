@@ -1,5 +1,5 @@
 const DEFAULT_LANGUAGES = [
-  { name: 'Any Launguage' },
+  { name: 'Any Language' },
   { name: 'ArnoldC' },
   { name: 'Bash' },
   { name: 'Brainfuck' },
