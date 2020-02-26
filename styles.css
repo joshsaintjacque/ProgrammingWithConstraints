@@ -1,50 +1,181 @@
-body {
-  font-size: 14px;
+/* Variable Declarations */
+
+:root {
+  --color-primary: #119103;
+  --color-warning: #e74c3c;
+  --font-body: 'Quicksand', sans-serif;
+  --font-color-light: white;
+  --font-color-dark: black;
+  --font-headers: 'Press Start 2P', cursive;
+  --font-size-standard: 24px;
+  --spacing-large: 40px;
+  --spacing-standard: 20px;
+  --spacing-small: 10px;
 }
 
-.constraints {
+/* Utility Classes */
+
+.flex-column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  height: 100vh;
-  font-family: 'Quicksand', sans-serif;
 }
 
-.constraints__title {
-  font-family: 'Press Start 2P', cursive;
-  font-weight: lighter;
-  text-align: center;
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.material-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.material-card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+a.hidden,
+button.hidden {
+  display: none;
+}
+
+/* Domain Classes */
+
+body {
+  font-size: var(--font-size-standard);
+  justify-content: space-between;
+  height: calc(100vh - var(--spacing-standard) * 2);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: var(--spacing-standard);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.constraint__details .button__unlock {
+  color: var(--color-warning);
+}
+
+.constraints {
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
 }
 
 .constraint {
+  overflow: hidden;
+}
+
+.constraint__field-button {
+  background: none;
+  border: none;
+  transition: color 0.25s ease-out;
+  text-decoration: none;
+  color: var(--font-color-dark);
+  display: inline-block;
+  padding: 0 var(--spacing-small);
+}
+
+.constraint__field-button:hover {
+  color: var(--color-primary);
+  transition: color 0.25s ease-out;
+}
+
+.header {
+  font-family: var(--font-headers);
+  font-weight: lighter;
+  font-size: var(--font-size-standard);
+  margin: 0;
+}
+
+.constraints__title {
   text-align: center;
-  display: inline;
+}
+
+.constraints__subtitle {
+  color: var(--color-primary);
+  text-align: right;
+}
+
+.constraints__options {
+  margin-bottom: var(--spacing-standard);
+  width: 90%;
+}
+
+.constraints__header {
+  margin-bottom: var(--spacing-large);
+}
+
+.constraint__header {
+  background-color: var(--color-primary);
+  color: var(--font-color-light);
+  font-family: var(--font-headers);
+  font-size: 16px;
+  justify-content: space-between;
+  padding: var(--spacing-small) var(--spacing-standard);
+}
+
+.details__toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 0;
+  transition: 0.25s ease;
+}
+
+.details__toggle--expanded {
+  transform: rotate(180deg);
 }
 
 .constraint__value {
   border: none;
-  border-bottom: 1px solid green;
   font-size: 1em;
   text-align: center;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   text-transform: lowercase;
+  text-align: left;
+  width: 100%;
+  text-overflow: ellipsis;
+  padding: var(--spacing-small) var(--spacing-standard);
+}
+
+.constraint__control {
+  display: inline-block;
+}
+
+.constraint__details--expanded {
+  transition: opacity 0.25s ease-out, padding 0.25s ease-out;
+  opacity: 1;
+  height: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: end;
+}
+
+.constraint__details--collapsed {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease-in;
 }
 
 .constraints__button {
   border: none;
-  padding: 20px 40px;
-  background-color: green;
-  color: white;
-  box-shadow: 2px 4px 10px black;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 1.5em;
-  letter-spacing: .2em;
+  padding: var(--spacing-standard) var(--spacing-large);
+  background-color: var(--color-primary);
+  color: var(--font-color-light);
+  font-family: var(--font-body);
+  font-size: 1em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-}
-
-.constraints__button:hover {
-  box-shadow: 1px 2px 10px black;
 }

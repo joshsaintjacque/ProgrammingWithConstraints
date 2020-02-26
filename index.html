@@ -5,70 +5,276 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>constraints.app</title>
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <script type="module" src="main.spec.js"></script>
     <link
-      href="https://fonts.googleapis.com/css?family=Press+Start+2P|Quicksand&display=swap"
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P|Quicksand|Material+Icons&display=swap"
       rel="stylesheet"
     />
   </head>
 
-  <body>
-    <div class="constraints">
-      <div class="constraints__options">
-        <h1 class="constraints__title">constraints.app</h1>
+  <body class="flex-column">
+    <div class="constraints flex-column">
+      <div class="constraints__header">
+        <h1 class="header constraints__title">constraints</h1>
+        <h2 class="header constraints__subtitle">.app</h2>
+      </div>
 
+      <div class="constraints__options material-card">
         <div class="constraint">
-          <label for="project">Build a</label>
+          <div class="constraint__header flex-row">
+            <label for="project">Build a:</label>
+            <button class="details__toggle material-icons" data-field="project">
+              arrow_drop_up
+            </button>
+          </div>
+
           <select id="project" class="constraint__value">
-            <option value="binary-to-decimal-converter"
-              >Binary-to-decimal converter</option
+            <option value="loading">Loading...</option>
+          </select>
+
+          <div class="constraint__details constraint__details--collapsed" data-field="project">
+            <a
+              target="_blank"
+              class="hidden material-icons constraint__field-button"
+              href="/"
+              title="Learn more about this option"
             >
-            <option value="border-radius-previewer"
-              >Border Radius Previewer</option
+              help
+            </a>
+
+            <button
+              class="material-icons constraint__field-button hidden button__unlock"
+              title="Unlock this constraint"
+              data-field="project"
             >
-            <option value="calculator">Calculator</option>
-          </select>
-        </div>
+              lock
+            </button>
 
-        <div class="constraint">
-          <label for="platform">as a</label>
-          <select id="platform" class="constraint__value">
-            <option value="command-line-program">command line program</option>
-            <option value="web-app">web app</option>
-            <option value="ios-app">iOS app</option>
-            <option value="android-app">android app</option>
-            <option value="desktop-application">desktop application</option>
-            <option value="browser-extension">browser Extension</option>
-            <option value="chat-bot">chat bot</option>
-          </select>
-        </div>
+            <button
+              class="material-icons constraint__field-button button__lock"
+              title="Lock this constraint"
+              data-field="project"
+            >
+              lock_open
+            </button>
 
-        <div class="constraint">
-          <label for="language">in</label>
-          <select id="language" class="constraint__value">
-            <option value="javascript">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-            <option value="ruby">Ruby</option>
-          </select>
-        </div>
+            <button
+              class="material-icons constraint__field-button button__edit"
+              title="Edit options"
+            >
+              edit
+            </button>
 
-        <div class="constraint">
-          <label for="twist">but</label>
-          <select id="twist" class="constraint__value">
-            <option value="in-less-than-1kb">in less than 1kb</option>
-            <option value="in-less-than-5kb">in less than 5kb</option>
-            <option value="finish-in-1-hour">finish in 1 hour</option>
-            <option value="finish-in-2-hours">finish in 2 hours</option>
-            <option value="finish-in-4-hours">finish in 4 hours</option>
-            <option value="without-dependencies">without dependencies</option>
-          </select>
+            <button
+              class="material-icons constraint__field-button button__delete"
+              title="Remove this option"
+            >
+              delete
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__restore"
+              title="Restore default options to this constraint"
+            >
+              restore_page
+            </button>
+          </div>
         </div>
       </div>
 
-      <button onclick="randomize()" class="constraints__button">
-        Randomize
-      </button>
+      <div class="constraints__options material-card">
+        <div class="constraint">
+          <div class="constraint__header flex-row">
+            <label for="platform">as a:</label>
+            <button class="details__toggle material-icons" data-field="platform">
+              arrow_drop_up
+            </button>
+          </div>
+
+          <select id="platform" class="constraint__value">
+            <option value="loading">Loading...</option>
+          </select>
+
+          <div class="constraint__details constraint__details--collapsed" data-field="platform">
+            <a
+              target="_blank"
+              class="hidden material-icons constraint__field-button"
+              href="/"
+              title="Learn more about this option"
+            >
+              help
+            </a>
+
+            <button
+              class="material-icons constraint__field-button hidden button__unlock"
+              title="Unlock this constraint"
+              data-field="platform"
+            >
+              lock
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__lock"
+              title="Lock this constraint"
+              data-field="platform"
+            >
+              lock_open
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__edit"
+              title="Edit options"
+            >
+              edit
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__delete"
+              title="Remove this option"
+            >
+              delete
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__restore"
+              title="Restore default options to this constraint"
+            >
+              restore_page
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="constraints__options material-card">
+        <div class="constraint">
+          <div class="constraint__header flex-row">
+            <label for="language">in:</label>
+            <button class="details__toggle material-icons" data-field="language">
+              arrow_drop_up
+            </button>
+          </div>
+
+          <select id="language" class="constraint__value">
+            <option value="loading">Loading...</option>
+          </select>
+
+          <div class="constraint__details constraint__details--collapsed" data-field="language">
+            <a
+              target="_blank"
+              class="hidden material-icons constraint__field-button"
+              href="/"
+              title="Learn more about this option"
+            >
+              help
+            </a>
+
+            <button
+              class="material-icons constraint__field-button hidden button__unlock"
+              title="Unlock this constraint"
+              data-field="language"
+            >
+              lock
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__lock"
+              title="Lock this constraint"
+              data-field="language"
+            >
+              lock_open
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__edit"
+              title="Edit options"
+            >
+              edit
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__delete"
+              title="Remove this option"
+            >
+              delete
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__restore"
+              title="Restore default options to this constraint"
+            >
+              restore_page
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="constraints__options material-card">
+        <div class="constraint">
+          <div class="constraint__header flex-row">
+            <label for="twist">and build it:</label>
+            <button class="details__toggle material-icons" data-field="twist">
+              arrow_drop_up
+            </button>
+          </div>
+
+          <select id="twist" class="constraint__value">
+            <option value="loading">Loading...</option>
+          </select>
+
+          <div class="constraint__details constraint__details--collapsed" data-field="twist">
+            <a
+              target="_blank"
+              class="hidden material-icons constraint__field-button"
+              href="/"
+              title="Learn more about this option"
+            >
+              help
+            </a>
+
+            <button
+              class="material-icons constraint__field-button hidden button__unlock"
+              title="Unlock this constraint"
+              data-field="twist"
+            >
+              lock
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__lock"
+              title="Lock this constraint"
+              data-field="twist"
+            >
+              lock_open
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__edit"
+              title="Edit options"
+            >
+              edit
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__delete"
+              title="Remove this option"
+            >
+              delete
+            </button>
+
+            <button
+              class="material-icons constraint__field-button button__restore"
+              title="Restore default options to this constraint"
+            >
+              restore_page
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <button class="constraints__button material-card button__randomize">
+      Randomize
+    </button>
   </body>
 </html>
