@@ -38,16 +38,21 @@ describe('Main', () => {
 
   describe('setLocationPath()', () => {
     it('sets the path based on the selected options', () => {
-      document.querySelector('#project').value = 'calculator';
-      document.querySelector('#platform').value = 'web-app';
-      document.querySelector('#language').value = 'javascript';
-      document.querySelector('#twist').value = 'without-dependencies';
+      // Add an option to the field
+      const select = document.querySelector('#project');
+      const option = document.createElement('option');
+      const text = document.createTextNode('Cheesy Double Beef Burrito');
+      option.appendChild(text);
+      option.value = 'Cheesy Double Beef Burrito';
+      select.appendChild(option);
 
+      // Select the option
+      select.value = 'Cheesy Double Beef Burrito';
+
+      // Act
       setLocationPath();
 
-      return expect(window.location.pathname).toBe(
-        '/calculator/web-app/javascript/without-dependencies',
-      );
+      return expect(window.location.search).toContain('project=Cheesy+Double+Beef+Burrito');
     });
   });
 });
