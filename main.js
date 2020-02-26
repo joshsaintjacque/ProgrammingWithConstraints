@@ -1,6 +1,16 @@
+import initialState from './data/initialState.js';
+
 function onLoad() {
+  initializeApplicationState();
   addEventListeners();
   setAppStateFromParams();
+}
+
+function initializeApplicationState() {
+  const hasExistingState = !!localStorage.getItem('state');
+  if (!hasExistingState) {
+    localStorage.setItem('state', JSON.stringify(initialState));
+  }
 }
 
 function onChange() {

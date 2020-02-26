@@ -1,3 +1,5 @@
+import initialState from './data/initialState.js';
+
 export function describe(name, callback) {
   const url = new URL(window.location);
   const isTestRun = url.searchParams.get('runTests');
@@ -12,6 +14,8 @@ export function it(name, callback) {
   const isSuccess = callback();
   const icon = isSuccess ? '✔' : '❌';
   console.log(`${buildLeadingWhitespace()} ${icon} ${name}`);
+  localStorage.clear();
+  localStorage.setItem('state', JSON.stringify(initialState));
 }
 
 function buildLeadingWhitespace() {
@@ -22,8 +26,7 @@ function buildLeadingWhitespace() {
 
 function getCallstackDepth(adjuster = 1) {
   return (
-    new Error().stack.split('\n').filter(line => line.split('@')[0].length > 0)
-      .length - adjuster
+    new Error().stack.split('\n').filter(line => line.split('@')[0].length > 0).length - adjuster
   );
 }
 

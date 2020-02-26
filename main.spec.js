@@ -1,49 +1,38 @@
 import { describe, it, expect } from './specSupport.js';
+import { randomize, setLocationPath, initializeApplicationState } from './main.js';
 
 describe('Main', () => {
   describe('randomize()', () => {
     it('changes select box values', () => {
-      document
-        .querySelectorAll('select')
-        .forEach(select => (select.value = undefined));
+      document.querySelectorAll('select').forEach(select => (select.value = undefined));
 
       randomize();
 
-      const numberOfSelectsWithValuesSet = Array.from(
-        document.querySelectorAll('select'),
-      ).filter(select => select.value).length;
+      const numberOfSelectsWithValuesSet = Array.from(document.querySelectorAll('select')).filter(
+        select => select.value,
+      ).length;
 
       return expect(numberOfSelectsWithValuesSet, 4);
     });
-
-    it('updates the width of the select', () => {
-      document
-        .querySelectorAll('select')
-        .forEach(select => (select.style.width = '0px'));
-
-      randomize();
-
-      const numberOfSelectsWithPositiveWidth = Array.from(
-        document.querySelectorAll('select'),
-      ).filter(select => select.style.width !== '0px').length;
-
-      return expect(numberOfSelectsWithPositiveWidth, 4);
-    });
   });
 
-  describe('getTextRenderedWidth()', () => {
-    it('returns the rendered width of the text in pixels', () => {
-      const result = getTextRenderedWidth('trekkies are the worst fans');
-
-      return expect(result, '176px');
+  describe('initializeApplicationState()', () => {
+    describe('when the state already exists', () => {
+      it('does not overwrite the existing state', () => {
+        localStorage.setItem('state', JSON.stringify({ name: 'test state' }));
+        initializeApplicationState();
+        const newState = JSON.parse(localStorage.getItem('state'));
+        return expect(newState.name, 'test state');
+      });
     });
 
-    it('removes temporary element from the DOM', () => {
-      getTextRenderedWidth('yolo swaggins');
-
-      const isTextInDOM = document.body.innerHTML.includes('yolo swaggins');
-
-      return expect(isTextInDOM, false);
+    describe('when the state does not exist', () => {
+      it('persists the initial state to local storage', () => {
+        localStorage.clear();
+        initializeApplicationState();
+        const newState = JSON.parse(localStorage.getItem('state'));
+        return expect(newState.languages[0].name, 'Any Language');
+      });
     });
   });
 
