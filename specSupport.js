@@ -36,7 +36,19 @@ export function expect(value) {
     console.warn(`Expected ${value} to equal ${expectation}`);
   }
 
+  function toContain(expectation) {
+    if (value.includes(expectation)) return true;
+    console.warn(`Expected ${value} to contain ${expectation}`);
+  }
+
+  function toBeGreaterThan(expectation) {
+    if (value > expectation) return true;
+    console.warn(`Expected ${value} to be greater than ${expectation}`);
+  }
+
   return {
     toBe,
+    toContain,
+    toBeGreaterThan,
   };
 }

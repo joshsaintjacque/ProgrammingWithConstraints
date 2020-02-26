@@ -1,5 +1,5 @@
 import { describe, it, expect } from './specSupport.js';
-import { randomize, setLocationPath, initializeApplicationState } from './main.js';
+import { randomize, setLocationPath, initializeApplicationState, populateFields } from './main.js';
 
 describe('Main', () => {
   describe('randomize()', () => {
@@ -53,6 +53,20 @@ describe('Main', () => {
       setLocationPath();
 
       return expect(window.location.search).toContain('project=Cheesy+Double+Beef+Burrito');
+    });
+
+    describe('populateFields()', () => {
+      it('loads options from state into the constraint fields', () => {
+        // Arrange - remove existing options from one of the fields
+        const select = document.querySelector('#platform');
+        Array.from(select.options).forEach(option => select.removeChild(option));
+
+        // Act
+        populateFields();
+
+        // Assert
+        return expect(document.querySelector('#platform').options.length).toBeGreaterThan(0);
+      });
     });
   });
 });

@@ -2,6 +2,7 @@ import initialState from './data/initialState.js';
 
 function onLoad() {
   initializeApplicationState();
+  populateFields();
   addEventListeners();
   setAppStateFromParams();
 }
@@ -13,7 +14,31 @@ function initializeApplicationState() {
   }
 }
 
-function onChange() {
+
+function populateFields() {
+  const state = JSON.parse(localStorage.getItem('state'));
+
+
+export function populateFields() {
+  const state = JSON.parse(localStorage.getItem('state'));
+
+  Object.keys(state).forEach(field => {
+    const id = field.slice(0, -1);
+    const select = document.querySelector(`#${id}`);
+    if (!select) return;
+
+    state[field].forEach(data => {
+      const option = document.createElement('option');
+      const text = document.createTextNode(data.name);
+      option.appendChild(text);
+
+      option.value = data.name;
+      select.appendChild(option);
+    });
+
+    select.removeChild(select.options[0]);
+  });
+}
   setLocationPath();
 }
 
