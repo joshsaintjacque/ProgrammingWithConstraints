@@ -5,6 +5,7 @@ function onLoad() {
   populateFields();
   addEventListeners();
   setAppStateFromParams();
+  initializeFieldLinks();
 }
 
 function initializeApplicationState() {
@@ -15,9 +16,15 @@ function initializeApplicationState() {
 }
 
 
-function populateFields() {
+function initializeFieldLinks() {
   const state = JSON.parse(localStorage.getItem('state'));
 
+  Object.keys(state.fields).forEach(field => {
+    const select = document.querySelector(`#${field}`);
+
+    setFieldLinkURL(field, select.value);
+  });
+}
 
 export function populateFields() {
   const state = JSON.parse(localStorage.getItem('state'));
@@ -39,7 +46,22 @@ export function populateFields() {
     select.removeChild(select.options[0]);
   });
 }
+
+function onChange(event) {
+  const { target } = event;
+  const { id, value } = target;
+
   setLocationPath();
+  setFieldLinkURL(id, value);
+}
+
+export function setFieldLinkURL(field, value) {
+  const link = document.querySelector(`.constraint__details[data-field=${field}] a`);
+  const entity = initialState[`${field}s`].find(entity => entity.name === value);
+  if (!entity) return;
+
+  link.href = entity.url;
+  entity.url ? link.classList.remove('hidden') : link.classList.add('hidden');
 }
 
 function addEventListeners() {
@@ -132,7 +154,7 @@ function setSelectWithRandomValue(select) {
 /**
  * Returns a random element from an array. Does not mutate the array.
  *
- * @param array Source from which to pull random value.
+ * @param {any[]} array Source from which to pull random value.
  */
 function sample(array) {
   return array[Math.floor(Math.random() * array.length)];

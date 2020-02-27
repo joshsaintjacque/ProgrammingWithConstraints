@@ -14,8 +14,7 @@ export function it(name, callback) {
   const isSuccess = callback();
   const icon = isSuccess ? '✔' : '❌';
   console.log(`${buildLeadingWhitespace()} ${icon} ${name}`);
-  localStorage.clear();
-  localStorage.setItem('state', JSON.stringify(initialState));
+  cleanAndResetApp();
 }
 
 function buildLeadingWhitespace() {
@@ -41,6 +40,11 @@ export function expect(value) {
     console.warn(`Expected ${value} to contain ${expectation}`);
   }
 
+  function notToContain(expectation) {
+    if (!value.includes(expectation)) return true;
+    console.warn(`Expected ${value} not to contain ${expectation}`);
+  }
+
   function toBeGreaterThan(expectation) {
     if (value > expectation) return true;
     console.warn(`Expected ${value} to be greater than ${expectation}`);
@@ -49,6 +53,12 @@ export function expect(value) {
   return {
     toBe,
     toContain,
+    notToContain,
     toBeGreaterThan,
   };
+}
+
+function cleanAndResetApp() {
+  localStorage.clear();
+  localStorage.setItem('state', JSON.stringify(initialState));
 }

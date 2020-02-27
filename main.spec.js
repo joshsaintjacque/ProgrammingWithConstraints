@@ -1,5 +1,11 @@
 import { describe, it, expect } from './specSupport.js';
-import { randomize, setLocationPath, initializeApplicationState, populateFields } from './main.js';
+import {
+  randomize,
+  setLocationPath,
+  initializeApplicationState,
+  populateFields,
+  setFieldLinkURL,
+} from './main.js';
 
 describe('Main', () => {
   describe('randomize()', () => {
@@ -31,7 +37,9 @@ describe('Main', () => {
     describe('when the state does not exist', () => {
       it('persists the initial state to local storage', () => {
         localStorage.clear();
+
         initializeApplicationState();
+
         const newState = JSON.parse(localStorage.getItem('state'));
         return expect(newState.languages[0].name).toBe('Any Language');
       });
@@ -69,6 +77,24 @@ describe('Main', () => {
         // Assert
         return expect(document.querySelector('#platform').options.length).toBeGreaterThan(0);
       });
+    });
+  });
+
+  describe('setFieldLinkURL()', () => {
+    it('shows the field link', () => {
+      setFieldLinkURL('project', 'Calculator');
+      const link = document.querySelector('.constraint__details[data-field=project] a');
+
+      return expect(Array.from(link.classList)).notToContain('hidden');
+    });
+
+    it('sets the field link href', () => {
+      setFieldLinkURL('project', 'Calculator');
+      const link = document.querySelector('.constraint__details[data-field=project] a');
+
+      return expect(link.href).toBe(
+        'https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Calculator-App.md',
+      );
     });
   });
 });
