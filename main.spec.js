@@ -1,4 +1,4 @@
-import { describe, it, expect } from './specSupport.js';
+import { describe, it, expect, addOptionToSelect } from './specSupport.js';
 import {
   randomize,
   setLocationPath,
@@ -48,18 +48,11 @@ describe('Main', () => {
 
   describe('setLocationPath()', () => {
     it('sets the path based on the selected options', () => {
-      // Add an option to the field
       const select = document.querySelector('#project');
-      const option = document.createElement('option');
-      const text = document.createTextNode('Cheesy Double Beef Burrito');
-      option.appendChild(text);
-      option.value = 'Cheesy Double Beef Burrito';
-      select.appendChild(option);
+      const option = 'Cheesy Double Beef Burrito';
+      addOptionToSelect({ select, option });
+      select.value = option;
 
-      // Select the option
-      select.value = 'Cheesy Double Beef Burrito';
-
-      // Act
       setLocationPath();
 
       return expect(window.location.search).toContain('project=Cheesy+Double+Beef+Burrito');

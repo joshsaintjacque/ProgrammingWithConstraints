@@ -62,3 +62,18 @@ function cleanAndResetApp() {
   localStorage.clear();
   localStorage.setItem('state', JSON.stringify(initialState));
 }
+
+/**
+ * Adds a new child option element with the provided text to the provided select
+ * element. The option's value is the same as the text.
+ *
+ * @param {{option: string, select: HTMLSelectElement}} options Include the
+ * string value of the option to add and the select element to add it to.
+ */
+export function addOptionToSelect({ option, select }) {
+  const optionElement = document.createElement('option');
+  const text = document.createTextNode(option);
+  optionElement.appendChild(text);
+  optionElement.value = option;
+  select.appendChild(optionElement);
+}
