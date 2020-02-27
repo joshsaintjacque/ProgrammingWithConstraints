@@ -5,6 +5,9 @@ import {
   initializeApplicationState,
   populateFields,
   setFieldLinkURL,
+  onToggle,
+  initializeLockButton,
+  initializeUnlockButton,
 } from './main.js';
 
 describe('Main', () => {
@@ -88,6 +91,83 @@ describe('Main', () => {
       return expect(link.href).toBe(
         'https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Calculator-App.md',
       );
+    });
+  });
+
+  describe('onToggle()', () => {
+    describe('when the details are collapsed', () => {
+      const toggleButton = document.querySelector('.details__toggle[data-field=project]');
+      const details = document.querySelector(`.constraint__details[data-field=project`);
+
+      onToggle({ target: toggleButton });
+
+      it('adds the expanded class', () => {
+        return expect(Array.from(details.classList)).toContain('constraint__details--expanded');
+      });
+
+      it('removes the collapsed class', () => {
+        return expect(Array.from(details.classList)).notToContain('constraint__details--collapsed');
+      });
+
+      it('switches the toggle state', () => {
+        return expect(Array.from(toggleButton.classList)).toContain('details__toggle--expanded');
+      });
+    });
+
+    describe('when the details are expanded', () => {
+      const toggleButton = document.querySelector('.details__toggle[data-field=project]');
+      const details = document.querySelector(`.constraint__details[data-field=project`);
+
+      onToggle({ target: toggleButton });
+
+      it('removes the expanded class', () => {
+        return expect(Array.from(details.classList)).notToContain('constraint__details--expanded');
+      });
+
+      it('adds the collapsed class', () => {
+        return expect(Array.from(details.classList)).toContain('constraint__details--collapsed');
+      });
+
+      it('switches the toggle state', () => {
+        return expect(Array.from(toggleButton.classList)).notToContain('details__toggle--expanded');
+      });
+    });
+  });
+  describe('initializeLockButton()', () => {
+    const lockButton = document.querySelector(
+      `.constraint__details[data-field=language] .button__lock`,
+    );
+    const unlockButton = document.querySelector(
+      `.constraint__details[data-field=language] .button__unlock`,
+    );
+
+    initializeLockButton('language');
+
+    it('hides the lock button', () => {
+      return expect(Array.from(lockButton.classList)).toContain('hidden');
+    });
+
+    it('shows the unlock button', () => {
+      return expect(Array.from(unlockButton.classList)).notToContain('hidden');
+    });
+  });
+
+  describe('initializeUnlockButton()', () => {
+    const lockButton = document.querySelector(
+      `.constraint__details[data-field=platform] .button__lock`,
+    );
+    const unlockButton = document.querySelector(
+      `.constraint__details[data-field=platform] .button__unlock`,
+    );
+
+    initializeUnlockButton('platform');
+
+    it('hides the unlock button', () => {
+      return expect(Array.from(unlockButton.classList)).toContain('hidden');
+    });
+
+    it('shows the lock button', () => {
+      return expect(Array.from(lockButton.classList)).notToContain('hidden');
     });
   });
 });

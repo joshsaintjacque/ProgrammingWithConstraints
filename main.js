@@ -1,20 +1,46 @@
 import initialState from './data/initialState.js';
 
+// TODO: Calculate a/an based on platform value
+// TODO: Add URL resources on load
+// TODO: Add credits
+// TODO: Add project / platform / language / twist repositories
+// TODO: Add link class (setHref, show, hide - extends element?)
+// TODO: Add select class (addOption, removeOption)
+// TODO: Implement dark mode
+// TODO: Add restore functionality
+// TODO: Add ability to manage (CRUD) options
+// TODO: Introduce reducers
+// TODO: Add README
+
 function onLoad() {
   initializeApplicationState();
   populateFields();
   addEventListeners();
   setAppStateFromParams();
   initializeFieldLinks();
+  initializeLocks();
 }
 
-function initializeApplicationState() {
+export function initializeApplicationState() {
   const hasExistingState = !!localStorage.getItem('state');
   if (!hasExistingState) {
     localStorage.setItem('state', JSON.stringify(initialState));
   }
 }
 
+export function initializeLocks() {
+  const state = JSON.parse(localStorage.getItem('state'));
+
+  Object.keys(state.fields).forEach(field => {
+    const { isLocked } = state.fields[field];
+    if (!isLocked) return;
+
+    const lockButton = document.querySelector(
+      `.constraint__details[data-field=${field}] .button__lock`,
+    );
+    initializeLockButton(field);
+  });
+}
 
 function initializeFieldLinks() {
   const state = JSON.parse(localStorage.getItem('state'));
@@ -64,18 +90,97 @@ export function setFieldLinkURL(field, value) {
   entity.url ? link.classList.remove('hidden') : link.classList.add('hidden');
 }
 
-function addEventListeners() {
+export function onToggle(event) {
+  const { target } = event;
+  const { field } = target.dataset;
+  const details = document.querySelector(`.constraint__details[data-field=${field}`);
+  const areDetailsOpen = details.className.includes('--expanded');
+
+  if (areDetailsOpen) {
+    details.classList.remove('constraint__details--expanded');
+    details.classList.add('constraint__details--collapsed');
+
+    target.classList.remove('details__toggle--expanded');
+  } else {
+    details.classList.remove('constraint__details--collapsed');
+    details.classList.add('constraint__details--expanded');
+
+    target.classList.add('details__toggle--expanded');
+  }
+}
+
+export function addEventListeners() {
   const randomizeButton = document.querySelector('.constraints__button');
   randomizeButton.addEventListener('click', randomize);
 
   document.querySelectorAll('select').forEach(select => {
     select.addEventListener('change', onChange);
   });
+
+  document.querySelectorAll('.details__toggle').forEach(button => {
+    button.addEventListener('click', onToggle);
+  });
+
+  document.querySelectorAll('.button__lock').forEach(button => {
+    button.addEventListener('click', onLock);
+  });
+
+  document.querySelectorAll('.button__unlock').forEach(button => {
+    button.addEventListener('click', onUnlock);
+  });
+}
+
+export function onLock(event) {
+  const { target } = event;
+  const { field } = target.dataset;
+  initializeLockButton(field);
+
+  const state = JSON.parse(localStorage.getItem('state'));
+  const newState = { ...state };
+  newState.fields[field].isLocked = true;
+  localStorage.setItem('state', JSON.stringify(newState));
+}
+
+export function onUnlock(event) {
+  const { target } = event;
+  const { field } = target.dataset;
+  initializeUnlockButton(field);
+
+  const state = JSON.parse(localStorage.getItem('state'));
+  const newState = { ...state };
+  newState.fields[field].isLocked = false;
+  localStorage.setItem('state', JSON.stringify(newState));
+}
+
+export function initializeUnlockButton(field) {
+  const unlockButton = document.querySelector(
+    `.constraint__details[data-field=${field}] .button__unlock`,
+  );
+  unlockButton.classList.add('hidden');
+
+  const lockButton = document.querySelector(
+    `.constraint__details[data-field=${field}] .button__lock`,
+  );
+  lockButton.classList.remove('hidden');
+}
+
+export function initializeLockButton(field) {
+  const lockButton = document.querySelector(
+    `.constraint__details[data-field=${field}] .button__lock`,
+  );
+  lockButton.classList.add('hidden');
+
+  const unlockButton = document.querySelector(
+    `.constraint__details[data-field=${field}] .button__unlock`,
+  );
+  unlockButton.classList.remove('hidden');
 }
 
 function setAppStateFromParams() {
   const url = new URL(window.location);
-  ['project', 'platform', 'language', 'twist'].forEach(param => {
+  const state = JSON.parse(localStorage.getItem('state'));
+
+  Object.keys(state.fields).forEach(param => {
     const data = url.searchParams.get(param);
     if (data) {
       document.querySelector(`#${param}`).value = data;

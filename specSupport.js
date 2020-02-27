@@ -7,11 +7,11 @@ export function describe(name, callback) {
   if (isTestRun === null) return;
 
   console.log(`${buildLeadingWhitespace()} ${name}`);
-  callback();
+  callback && callback();
 }
 
 export function it(name, callback) {
-  const isSuccess = callback();
+  const isSuccess = callback && callback();
   const icon = isSuccess ? '✔' : '❌';
   console.log(`${buildLeadingWhitespace()} ${icon} ${name}`);
   cleanAndResetApp();
