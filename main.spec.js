@@ -8,6 +8,7 @@ import {
   onToggle,
   initializeLockButton,
   initializeUnlockButton,
+  buildPlatformLabel,
 } from './main.js';
 
 describe('Main', () => {
@@ -168,6 +169,32 @@ describe('Main', () => {
 
     it('shows the lock button', () => {
       return expect(Array.from(lockButton.classList)).notToContain('hidden');
+    });
+  });
+
+  describe('buildPlatformLabel()', () => {
+    describe('when the platform select value starts with a vowel', () => {
+      it('uses the "an" indefinite article', () => {
+        const label = document.querySelector('label[for=platform]');
+        const select = document.querySelector('select#platform');
+        select.value = 'iOS App';
+
+        buildPlatformLabel();
+
+        return expect(label.innerText).toBe('as an:');
+      });
+    });
+
+    describe('when the platform select value starts with a consonant', () => {
+      it('uses the "a" indefinite article', () => {
+        const label = document.querySelector('label[for=platform]');
+        const select = document.querySelector('select#platform');
+        select.value = 'Browser Extension';
+
+        buildPlatformLabel();
+
+        return expect(label.innerText).toBe('as a:');
+      });
     });
   });
 });

@@ -1,6 +1,5 @@
 import initialState from './data/initialState.js';
 
-// TODO: Calculate a/an based on platform value
 // TODO: Add URL resources on load
 // TODO: Add credits
 // TODO: Add project / platform / language / twist repositories
@@ -79,6 +78,7 @@ function onChange(event) {
 
   setLocationPath();
   setFieldLinkURL(id, value);
+  buildPlatformLabel();
 }
 
 export function setFieldLinkURL(field, value) {
@@ -209,6 +209,7 @@ export function randomize() {
       randomizeButton.disabled = false;
     }
 
+    buildPlatformLabel();
     iteration += 1;
   }, 250);
 }
@@ -243,6 +244,19 @@ export function setLocationPath() {
   url.searchParams.set('twist', selectedTwist);
 
   window.history.replaceState({}, 'constraints.app', `/?${url.searchParams}`);
+}
+
+/**
+ * Sets the platform field label based on the value selected. Primarily used to
+ * distinguish between a/an preceeding the platform name.
+ */
+export function buildPlatformLabel() {
+  const VOWELS = ['a', 'e', 'i', 'o', 'u'];
+  const label = document.querySelector('label[for=platform]');
+  const select = document.querySelector('select#platform');
+  const startsWithVowel = VOWELS.includes(select.value[0].toLowerCase());
+
+  label.innerText = startsWithVowel ? 'as an:' : 'as a:';
 }
 
 /**
