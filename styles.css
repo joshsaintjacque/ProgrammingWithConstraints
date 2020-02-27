@@ -7,10 +7,20 @@
   --font-color-light: white;
   --font-color-dark: black;
   --font-headers: 'Press Start 2P', cursive;
+  --font-size-large: 36px;
   --font-size-standard: 24px;
   --spacing-large: 40px;
   --spacing-standard: 20px;
   --spacing-small: 10px;
+
+  /* 
+  Material Screen Size Breakpoints
+    xs: 0-600px
+    sm: 600-960px
+    md: 960-1280px
+    lg: 1280-1920px
+    xl: 1920px+
+  */
 }
 
 /* Utility Classes */
@@ -90,8 +100,14 @@ button:hover {
 .header {
   font-family: var(--font-headers);
   font-weight: lighter;
-  font-size: var(--font-size-standard);
+  font-size: var(--font-size-large);
   margin: 0;
+}
+
+@media (max-width: 600px) {
+  .header {
+    font-size: var(--font-size-standard);
+  }
 }
 
 .constraints__title {
