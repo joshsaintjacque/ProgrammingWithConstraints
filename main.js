@@ -1,6 +1,5 @@
 import initialState from './data/initialState.js';
 
-// TODO: Add URL resources on load
 // TODO: Add credits
 // TODO: Add project / platform / language / twist repositories
 // TODO: Add link class (setHref, show, hide - extends element?)
@@ -128,6 +127,10 @@ export function addEventListeners() {
   document.querySelectorAll('.button__unlock').forEach(button => {
     button.addEventListener('click', onUnlock);
   });
+
+  document.querySelectorAll('.button__delete').forEach(button => {
+    button.addEventListener('click', onDelete);
+  });
 }
 
 export function onLock(event) {
@@ -174,6 +177,30 @@ export function initializeLockButton(field) {
     `.constraint__details[data-field=${field}] .button__unlock`,
   );
   unlockButton.classList.remove('hidden');
+}
+
+export function onDelete(event) {
+  const { target: deleteButton } = event;
+  const { field } = deleteButton.dataset;
+  const select = document.querySelector(`select#${field}`);
+  const { value } = select;
+
+  removeOptionFromState({ field, value });
+  removeValueFromSelect(select);
+}
+
+function removeOptionFromState({ field, value }) {
+  const state = JSON.parse(localStorage.getItem('state'));
+  const newOptions = state[`${field}s`].filter(option => option.name !== value);
+  const newState = { ...state };
+  newState[`${field}s`] = newOptions;
+  localStorage.setItem('state', JSON.stringify(newState));
+}
+
+function removeValueFromSelect(select) {
+  const { value } = select;
+  const optionToRemove = Array.from(select.children).find(option => option.value === value);
+  select.removeChild(optionToRemove);
 }
 
 function setAppStateFromParams() {

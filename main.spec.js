@@ -9,6 +9,7 @@ import {
   initializeLockButton,
   initializeUnlockButton,
   buildPlatformLabel,
+  onDelete,
 } from './main.js';
 
 describe('Main', () => {
@@ -195,6 +196,24 @@ describe('Main', () => {
 
         return expect(label.innerText).toBe('as a:');
       });
+    });
+  });
+
+  describe('onDelete()', () => {
+    const select = document.querySelector('select#language');
+    select.value = 'Go';
+    const deleteButton = document.querySelector('.button__delete[data-field=language]');
+
+    onDelete({ target: deleteButton });
+
+    it('removes the option from state', () => {
+      const state = JSON.parse(localStorage.getItem('state'));
+
+      return expect(state.languages.map(lang => lang.name)).notToContain('Go');
+    });
+
+    it('removes the option from the select box', () => {
+      return expect(select.value).notToBe('Go');
     });
   });
 });
