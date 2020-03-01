@@ -1,14 +1,10 @@
 import initialState from './data/initialState.js';
 
 // TODO: Add credits
-// TODO: Add project / platform / language / twist repositories
-// TODO: Add link class (setHref, show, hide - extends element?)
-// TODO: Add select class (addOption, removeOption)
 // TODO: Implement dark mode
-// TODO: Add restore functionality
-// TODO: Add ability to manage (CRUD) options
-// TODO: Introduce reducers
 // TODO: Add README
+// TODO: Add intro text
+// TODO: Add analytics
 
 function onLoad() {
   initializeApplicationState();
@@ -91,7 +87,8 @@ function onChange(event) {
 
 export function setFieldLinkURL(field, value) {
   const link = document.querySelector(`.constraint__details[data-field=${field}] a`);
-  const entity = initialState[`${field}s`].find(entity => entity.name === value);
+  const state = JSON.parse(localStorage.getItem('state'));
+  const entity = state[`${field}s`].find(entity => entity.name === value);
   if (!entity) return;
 
   link.href = entity.url;
@@ -143,6 +140,10 @@ export function addEventListeners() {
 
   document.querySelectorAll('.button__restore').forEach(button => {
     button.addEventListener('click', onRestore);
+  });
+
+  document.querySelectorAll('.button__add').forEach(button => {
+    button.addEventListener('click', onAdd);
   });
 }
 
@@ -204,6 +205,38 @@ export function onDelete(event) {
   setLocationPath();
   setFieldLinkURL(field, select.value);
   buildPlatformLabel();
+}
+
+export function onAdd(event) {
+  const { target: addButton } = event;
+  const { field } = addButton.dataset;
+  const select = document.querySelector(`select#${field}`);
+  const newValue = prompt(`Enter a new option for the ${field} constraint:`);
+  if (!newValue) return;
+  if (isValueInStateField({ value: newValue, field })) {
+    alert(`Sorry, there is already a "${newValue}" option in the ${field} constraint.`);
+    return;
+  }
+
+  const state = JSON.parse(localStorage.getItem('state'));
+  const newState = { ...state };
+  newState[`${field}s`] = [...newState[`${field}s`], { name: newValue }];
+  localStorage.setItem('state', JSON.stringify(newState));
+
+  populateFieldFromState(`${field}s`);
+  select.value = newValue;
+  setLocationPath();
+  setFieldLinkURL(field, select.value);
+  buildPlatformLabel();
+}
+
+function isValueInStateField({ value, field }) {
+  const state = JSON.parse(localStorage.getItem('state'));
+  return (
+    Array.from(state[`${field}s`]).filter(
+      entity => entity.name.toLowerCase() === value.toLowerCase(),
+    ).length > 0
+  );
 }
 
 export function onRestore(event) {

@@ -12,6 +12,7 @@ import {
   onDelete,
   onRestore,
   removeValueFromSelect,
+  onAdd,
 } from './main.js';
 
 describe('Main', () => {
@@ -197,6 +198,47 @@ describe('Main', () => {
         buildPlatformLabel();
 
         return expect(label.innerText).toBe('as a:');
+      });
+    });
+  });
+
+  describe('onAdd()', () => {
+    const select = document.querySelector('select#language');
+    const addButton = document.querySelector('.button__add[data-field=language]');
+
+    onAdd({ target: addButton });
+
+    it('adds the option to state', () => {
+      const state = JSON.parse(localStorage.getItem('state'));
+
+      return expect(state.languages.map(lang => lang.name)).toContain(
+        'A text value entered in a prompt',
+      );
+    });
+
+    it('adds the option to the select box and selects it', () => {
+      return expect(select.value).toBe('A text value entered in a prompt');
+    });
+
+    describe('when adding a value that already exists', () => {
+      onAdd({ target: addButton });
+      onAdd({ target: addButton });
+
+      it('does not add the option to state again', () => {
+        const state = JSON.parse(localStorage.getItem('state'));
+        const languagesFound = state.languages
+          .map(lang => lang.name)
+          .filter(lang => lang === 'A text value entered in a prompt');
+
+        return expect(languagesFound.length).toBe(1);
+      });
+
+      it('does not add the option to the select box again', () => {
+        const options = Array.from(select.options).filter(
+          option => option.value === 'A text value entered in a prompt',
+        );
+
+        return expect(options.length).toBe(1);
       });
     });
   });

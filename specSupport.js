@@ -8,7 +8,7 @@ export function describe(name, callback) {
 
   console.log(`${buildLeadingWhitespace()} ${name}`);
 
-  disableWindowConfirm();
+  mockModals();
   callback && callback();
 }
 
@@ -71,8 +71,10 @@ function cleanAndResetApp() {
   localStorage.setItem('state', JSON.stringify(initialState));
 }
 
-function disableWindowConfirm() {
+function mockModals() {
   window.confirm = () => true;
+  window.prompt = () => 'A text value entered in a prompt';
+  window.alert = () => {};
 }
 
 /**
