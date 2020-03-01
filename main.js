@@ -33,9 +33,6 @@ export function initializeLocks() {
     const { isLocked } = state.fields[field];
     if (!isLocked) return;
 
-    const lockButton = document.querySelector(
-      `.constraint__details[data-field=${field}] .button__lock`,
-    );
     initializeLockButton(field);
   });
 }
