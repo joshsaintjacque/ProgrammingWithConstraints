@@ -10,6 +10,8 @@ import {
   initializeUnlockButton,
   buildPlatformLabel,
   onDelete,
+  onRestore,
+  removeValueFromSelect,
 } from './main.js';
 
 describe('Main', () => {
@@ -214,6 +216,51 @@ describe('Main', () => {
 
     it('removes the option from the select box', () => {
       return expect(select.value).notToBe('Go');
+    });
+  });
+
+  describe('onRestore()', () => {
+    const getState = () => JSON.parse(localStorage.getItem('state'));
+    const restoreButton = document.querySelector('.button__restore[data-field=language]');
+    const select = document.querySelector('select#language');
+
+    describe('when options have been previously deleted', () => {
+      const newLanguages = [...getState().languages.filter(lang => lang.name !== 'Ruby')];
+      const newState = JSON.stringify({ ...getState, languages: newLanguages });
+      localStorage.setItem('state', newState);
+      removeValueFromSelect(select, 'Ruby');
+
+      onRestore({ target: restoreButton });
+
+      it('restores them to state', () => {
+        return expect(getState().languages.map(lang => lang.name)).toContain('Ruby');
+      });
+
+      it('restores them to the select', () => {
+        const options = Array.from(select.options).map(option => option.value);
+
+        return expect(options).toContain('Ruby');
+      });
+    });
+
+    describe('when new options have been added', () => {
+      const newLanguages = [...getState().languages, { name: 'Cheesy Double Beef Burrito' }];
+      const newState = JSON.stringify({ ...getState, languages: newLanguages });
+      localStorage.setItem('state', newState);
+      addOptionToSelect({ option: 'Cheesy Double Beef Burrito', select });
+
+      onRestore({ target: restoreButton });
+      it('removes them from state', () => {
+        return expect(getState().languages.map(lang => lang.name)).notToContain(
+          'Cheesy Double Beef Burrito',
+        );
+      });
+
+      it('removes them from the select', () => {
+        const options = Array.from(select.options).map(option => option.value);
+
+        return expect(options).notToContain('Cheesy Double Beef Burrito');
+      });
     });
   });
 });

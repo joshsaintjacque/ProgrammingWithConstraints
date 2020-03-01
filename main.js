@@ -55,17 +55,29 @@ export function populateFields() {
     const select = document.querySelector(`#${id}`);
     if (!select) return;
 
-    state[field].forEach(data => {
-      const option = document.createElement('option');
-      const text = document.createTextNode(data.name);
-      option.appendChild(text);
-
-      option.value = data.name;
-      select.appendChild(option);
-    });
-
-    select.removeChild(select.options[0]);
+    populateFieldFromState(field);
   });
+}
+
+function populateFieldFromState(field) {
+  const id = field.slice(0, -1);
+  const select = document.querySelector(`#${id}`);
+  const state = JSON.parse(localStorage.getItem('state'));
+
+  removeAllOptionsFromSelect(select);
+
+  state[field].forEach(data => {
+    const option = document.createElement('option');
+    const text = document.createTextNode(data.name);
+    option.appendChild(text);
+
+    option.value = data.name;
+    select.appendChild(option);
+  });
+}
+
+function removeAllOptionsFromSelect(select) {
+  Array.from(select.options).forEach(option => select.removeChild(option));
 }
 
 function onChange(event) {
@@ -128,6 +140,10 @@ export function addEventListeners() {
   document.querySelectorAll('.button__delete').forEach(button => {
     button.addEventListener('click', onDelete);
   });
+
+  document.querySelectorAll('.button__restore').forEach(button => {
+    button.addEventListener('click', onRestore);
+  });
 }
 
 export function onLock(event) {
@@ -189,6 +205,17 @@ export function onDelete(event) {
   setFieldLinkURL(field, select.value);
   buildPlatformLabel();
 }
+
+export function onRestore(event) {
+  const { target: restoreButton } = event;
+  const { field } = restoreButton.dataset;
+  if (!confirm(`Are you sure you want to restore ${field}s? All changes will be lost.`)) return;
+
+  const state = JSON.parse(localStorage.getItem('state'));
+  const newState = { ...state };
+  newState[`${field}s`] = initialState[`${field}s`];
+  localStorage.setItem('state', JSON.stringify(newState));
+  populateFieldFromState(`${field}s`);
 }
 
 function removeOptionFromState({ field, value }) {
@@ -199,8 +226,10 @@ function removeOptionFromState({ field, value }) {
   localStorage.setItem('state', JSON.stringify(newState));
 }
 
-function removeValueFromSelect(select) {
-  const { value } = select;
+export function removeValueFromSelect(select, value) {
+  if (!value) {
+    value = select.value;
+  }
   const optionToRemove = Array.from(select.children).find(option => option.value === value);
   select.removeChild(optionToRemove);
 }
