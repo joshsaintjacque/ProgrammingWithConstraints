@@ -181,6 +181,7 @@ export function onDelete(event) {
   const { field } = deleteButton.dataset;
   const select = document.querySelector(`select#${field}`);
   const { value } = select;
+  if (!confirm(`Are you sure you want to delete "${value}" from ${field}s?`)) return;
 
   removeOptionFromState({ field, value });
   removeValueFromSelect(select);

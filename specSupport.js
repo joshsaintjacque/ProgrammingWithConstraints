@@ -7,6 +7,8 @@ export function describe(name, callback) {
   if (isTestRun === null) return;
 
   console.log(`${buildLeadingWhitespace()} ${name}`);
+
+  disableWindowConfirm();
   callback && callback();
 }
 
@@ -67,6 +69,10 @@ export function expect(value) {
 function cleanAndResetApp() {
   localStorage.clear();
   localStorage.setItem('state', JSON.stringify(initialState));
+}
+
+function disableWindowConfirm() {
+  window.confirm = () => true;
 }
 
 /**
