@@ -185,6 +185,10 @@ export function onDelete(event) {
 
   removeOptionFromState({ field, value });
   removeValueFromSelect(select);
+  setLocationPath();
+  setFieldLinkURL(field, select.value);
+  buildPlatformLabel();
+}
 }
 
 function removeOptionFromState({ field, value }) {
