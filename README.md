@@ -25,7 +25,6 @@ Click "randomize" to get a new project.
 ### Roadmap
 
 - [ ] Dark mode
-- [ ] Intro text
 
 ## How is it built?
 

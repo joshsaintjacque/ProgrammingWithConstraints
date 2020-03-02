@@ -2,6 +2,7 @@ import initialState from './data/initialState.js';
 
 // TODO: Add analytics
 // TODO: Handle a/an article in project label
+// TODO: Add intro text
 
 function onLoad() {
   initializeApplicationState();
