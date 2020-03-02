@@ -39,9 +39,10 @@ This led to a really interesting experience solving certain problems and even
 led me to make tweaks to some of the features I had in mind in order to keep
 complexity down.
 
-## How can I use it?
+## Contributing
 
-## How can I contribute to it?
+Clone and make sure tests pass (see below). You can add projects, languages,
+platforms, and twists in their respective files under the `data` folder.
 
 ## Running the tests
 
