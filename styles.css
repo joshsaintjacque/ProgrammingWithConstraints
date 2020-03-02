@@ -70,10 +70,9 @@ button.hidden {
 /* Domain Classes */
 
 body {
+  font-family: var(--font-body);
   font-size: var(--font-size-standard);
   justify-content: space-between;
-  height: calc(100vh - var(--spacing-standard) * 2);
-  font-family: var(--font-body);
   margin: 0;
   padding: var(--spacing-standard);
 }
@@ -212,5 +211,6 @@ button:hover {
   font-family: var(--font-body);
   font-size: 1em;
   letter-spacing: 0.2em;
+  margin-top: var(--spacing-large);
   text-transform: uppercase;
 }
