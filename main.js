@@ -1,10 +1,7 @@
 import initialState from './data/initialState.js';
 
-// TODO: Add credits
-// TODO: Implement dark mode
-// TODO: Add README
-// TODO: Add intro text
 // TODO: Add analytics
+// TODO: Handle a/an article in project label
 
 function onLoad() {
   initializeApplicationState();
