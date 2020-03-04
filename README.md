@@ -1,4 +1,4 @@
-# Constraints.app
+# Programming with Constraints
 
 ## What is it?
 
