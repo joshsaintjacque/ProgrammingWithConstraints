@@ -294,6 +294,9 @@ export function randomize() {
 
     if (iteration > 5) {
       clearInterval(interval);
+
+      document.querySelectorAll('select').forEach(({ id, value }) => setFieldLinkURL(id, value));
+
       randomizeButton.disabled = false;
     }
 
@@ -314,6 +317,7 @@ function randomizeFields() {
     const { isLocked } = state.fields[field];
     if (isLocked) return;
 
+    setFieldLinkURL(field, select.value);
     setSelectWithRandomValue(select);
     setLocationPath();
   });
