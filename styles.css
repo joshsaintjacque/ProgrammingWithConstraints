@@ -175,7 +175,6 @@ button:hover {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  text-transform: lowercase;
   text-align: left;
   width: 100%;
   text-overflow: ellipsis;
