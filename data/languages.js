@@ -13,7 +13,7 @@ const DEFAULT_LANGUAGES = [
   { name: 'Haskell' },
   { name: 'Java' },
   { name: 'JavaScript' },
-  { name: 'Julie' },
+  { name: 'Julia' },
   { name: 'Kotlin' },
   { name: 'Lua' },
   { name: 'Perl' },
