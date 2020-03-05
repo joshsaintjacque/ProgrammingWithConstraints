@@ -7,7 +7,7 @@ const DEFAULT_LANGUAGES = [
   { name: 'C#' },
   { name: 'C++' },
   { name: 'Crystal' },
-  { name: 'CSS + HTML' },
+  { name: 'CSS + HTML', url: 'https://stackoverflow.com/questions/2497146/is-css-turing-complete' },
   { name: 'Elixir' },
   { name: 'Go' },
   { name: 'Haskell' },
