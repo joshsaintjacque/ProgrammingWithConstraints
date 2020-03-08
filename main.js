@@ -1,4 +1,4 @@
-import initialState from './data/initialState.js';
+import initialState from "./data/initialState.js";
 
 // TODO: Add analytics
 // TODO: Handle a/an article in project label
@@ -13,14 +13,14 @@ function onLoad() {
 }
 
 export function initializeApplicationState() {
-  const hasExistingState = !!localStorage.getItem('state');
+  const hasExistingState = !!localStorage.getItem("state");
   if (!hasExistingState) {
-    localStorage.setItem('state', JSON.stringify(initialState));
+    localStorage.setItem("state", JSON.stringify(initialState));
   }
 }
 
 export function initializeLocks() {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
   Object.keys(state.fields).forEach(field => {
     const { isLocked } = state.fields[field];
@@ -31,7 +31,7 @@ export function initializeLocks() {
 }
 
 function initializeFieldLinks() {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
   Object.keys(state.fields).forEach(field => {
     const select = document.querySelector(`#${field}`);
@@ -41,7 +41,7 @@ function initializeFieldLinks() {
 }
 
 export function populateFields() {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
   Object.keys(state).forEach(field => {
     const id = field.slice(0, -1);
@@ -55,12 +55,12 @@ export function populateFields() {
 function populateFieldFromState(field) {
   const id = field.slice(0, -1);
   const select = document.querySelector(`#${id}`);
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
   removeAllOptionsFromSelect(select);
 
   state[field].forEach(data => {
-    const option = document.createElement('option');
+    const option = document.createElement("option");
     const text = document.createTextNode(data.name);
     option.appendChild(text);
 
@@ -83,64 +83,68 @@ function onChange(event) {
 }
 
 export function setFieldLinkURL(field, value) {
-  const link = document.querySelector(`.constraint__details[data-field=${field}] a`);
-  const state = JSON.parse(localStorage.getItem('state'));
+  const link = document.querySelector(
+    `.constraint__details[data-field=${field}] a`
+  );
+  const state = JSON.parse(localStorage.getItem("state"));
   const entity = state[`${field}s`].find(entity => entity.name === value);
   if (!entity) return;
 
   link.href = entity.url;
-  entity.url ? link.classList.remove('hidden') : link.classList.add('hidden');
+  entity.url ? link.classList.remove("hidden") : link.classList.add("hidden");
 }
 
 export function onToggle(event) {
   const { target } = event;
   const { field } = target.dataset;
-  const details = document.querySelector(`.constraint__details[data-field=${field}`);
-  const areDetailsOpen = details.className.includes('--expanded');
+  const details = document.querySelector(
+    `.constraint__details[data-field=${field}`
+  );
+  const areDetailsOpen = details.className.includes("--expanded");
 
   if (areDetailsOpen) {
-    details.classList.remove('constraint__details--expanded');
-    details.classList.add('constraint__details--collapsed');
+    details.classList.remove("constraint__details--expanded");
+    details.classList.add("constraint__details--collapsed");
 
-    target.classList.remove('details__toggle--expanded');
+    target.classList.remove("details__toggle--expanded");
   } else {
-    details.classList.remove('constraint__details--collapsed');
-    details.classList.add('constraint__details--expanded');
+    details.classList.remove("constraint__details--collapsed");
+    details.classList.add("constraint__details--expanded");
 
-    target.classList.add('details__toggle--expanded');
+    target.classList.add("details__toggle--expanded");
   }
 }
 
 export function addEventListeners() {
-  const randomizeButton = document.querySelector('.constraints__button');
-  randomizeButton.addEventListener('click', randomize);
+  const randomizeButton = document.querySelector(".constraints__button");
+  randomizeButton.addEventListener("click", randomize);
 
-  document.querySelectorAll('select').forEach(select => {
-    select.addEventListener('change', onChange);
+  document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("change", onChange);
   });
 
-  document.querySelectorAll('.details__toggle').forEach(button => {
-    button.addEventListener('click', onToggle);
+  document.querySelectorAll(".details__toggle").forEach(button => {
+    button.addEventListener("click", onToggle);
   });
 
-  document.querySelectorAll('.button__lock').forEach(button => {
-    button.addEventListener('click', onLock);
+  document.querySelectorAll(".button__lock").forEach(button => {
+    button.addEventListener("click", onLock);
   });
 
-  document.querySelectorAll('.button__unlock').forEach(button => {
-    button.addEventListener('click', onUnlock);
+  document.querySelectorAll(".button__unlock").forEach(button => {
+    button.addEventListener("click", onUnlock);
   });
 
-  document.querySelectorAll('.button__delete').forEach(button => {
-    button.addEventListener('click', onDelete);
+  document.querySelectorAll(".button__delete").forEach(button => {
+    button.addEventListener("click", onDelete);
   });
 
-  document.querySelectorAll('.button__restore').forEach(button => {
-    button.addEventListener('click', onRestore);
+  document.querySelectorAll(".button__restore").forEach(button => {
+    button.addEventListener("click", onRestore);
   });
 
-  document.querySelectorAll('.button__add').forEach(button => {
-    button.addEventListener('click', onAdd);
+  document.querySelectorAll(".button__add").forEach(button => {
+    button.addEventListener("click", onAdd);
   });
 }
 
@@ -149,10 +153,10 @@ export function onLock(event) {
   const { field } = target.dataset;
   initializeLockButton(field);
 
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   const newState = { ...state };
   newState.fields[field].isLocked = true;
-  localStorage.setItem('state', JSON.stringify(newState));
+  localStorage.setItem("state", JSON.stringify(newState));
 }
 
 export function onUnlock(event) {
@@ -160,34 +164,34 @@ export function onUnlock(event) {
   const { field } = target.dataset;
   initializeUnlockButton(field);
 
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   const newState = { ...state };
   newState.fields[field].isLocked = false;
-  localStorage.setItem('state', JSON.stringify(newState));
+  localStorage.setItem("state", JSON.stringify(newState));
 }
 
 export function initializeUnlockButton(field) {
   const unlockButton = document.querySelector(
-    `.constraint__details[data-field=${field}] .button__unlock`,
+    `.constraint__details[data-field=${field}] .button__unlock`
   );
-  unlockButton.classList.add('hidden');
+  unlockButton.classList.add("hidden");
 
   const lockButton = document.querySelector(
-    `.constraint__details[data-field=${field}] .button__lock`,
+    `.constraint__details[data-field=${field}] .button__lock`
   );
-  lockButton.classList.remove('hidden');
+  lockButton.classList.remove("hidden");
 }
 
 export function initializeLockButton(field) {
   const lockButton = document.querySelector(
-    `.constraint__details[data-field=${field}] .button__lock`,
+    `.constraint__details[data-field=${field}] .button__lock`
   );
-  lockButton.classList.add('hidden');
+  lockButton.classList.add("hidden");
 
   const unlockButton = document.querySelector(
-    `.constraint__details[data-field=${field}] .button__unlock`,
+    `.constraint__details[data-field=${field}] .button__unlock`
   );
-  unlockButton.classList.remove('hidden');
+  unlockButton.classList.remove("hidden");
 }
 
 export function onDelete(event) {
@@ -195,7 +199,8 @@ export function onDelete(event) {
   const { field } = deleteButton.dataset;
   const select = document.querySelector(`select#${field}`);
   const { value } = select;
-  if (!confirm(`Are you sure you want to delete "${value}" from ${field}s?`)) return;
+  if (!confirm(`Are you sure you want to delete "${value}" from ${field}s?`))
+    return;
 
   removeOptionFromState({ field, value });
   removeValueFromSelect(select);
@@ -211,14 +216,16 @@ export function onAdd(event) {
   const newValue = prompt(`Enter a new option for the ${field} constraint:`);
   if (!newValue) return;
   if (isValueInStateField({ value: newValue, field })) {
-    alert(`Sorry, there is already a "${newValue}" option in the ${field} constraint.`);
+    alert(
+      `Sorry, there is already a "${newValue}" option in the ${field} constraint.`
+    );
     return;
   }
 
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   const newState = { ...state };
   newState[`${field}s`] = [...newState[`${field}s`], { name: newValue }];
-  localStorage.setItem('state', JSON.stringify(newState));
+  localStorage.setItem("state", JSON.stringify(newState));
 
   populateFieldFromState(`${field}s`);
   select.value = newValue;
@@ -228,10 +235,10 @@ export function onAdd(event) {
 }
 
 function isValueInStateField({ value, field }) {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   return (
     Array.from(state[`${field}s`]).filter(
-      entity => entity.name.toLowerCase() === value.toLowerCase(),
+      entity => entity.name.toLowerCase() === value.toLowerCase()
     ).length > 0
   );
 }
@@ -239,34 +246,41 @@ function isValueInStateField({ value, field }) {
 export function onRestore(event) {
   const { target: restoreButton } = event;
   const { field } = restoreButton.dataset;
-  if (!confirm(`Are you sure you want to restore ${field}s? All changes will be lost.`)) return;
+  if (
+    !confirm(
+      `Are you sure you want to restore ${field}s? All changes will be lost.`
+    )
+  )
+    return;
 
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   const newState = { ...state };
   newState[`${field}s`] = initialState[`${field}s`];
-  localStorage.setItem('state', JSON.stringify(newState));
+  localStorage.setItem("state", JSON.stringify(newState));
   populateFieldFromState(`${field}s`);
 }
 
 function removeOptionFromState({ field, value }) {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
   const newOptions = state[`${field}s`].filter(option => option.name !== value);
   const newState = { ...state };
   newState[`${field}s`] = newOptions;
-  localStorage.setItem('state', JSON.stringify(newState));
+  localStorage.setItem("state", JSON.stringify(newState));
 }
 
 export function removeValueFromSelect(select, value) {
   if (!value) {
     value = select.value;
   }
-  const optionToRemove = Array.from(select.children).find(option => option.value === value);
+  const optionToRemove = Array.from(select.children).find(
+    option => option.value === value
+  );
   select.removeChild(optionToRemove);
 }
 
 function setAppStateFromParams() {
   const url = new URL(window.location);
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
   Object.keys(state.fields).forEach(param => {
     const data = url.searchParams.get(param);
@@ -284,7 +298,7 @@ function setAppStateFromParams() {
  * While the fields are being randomized the randomize button is disabled.
  */
 export function randomize() {
-  const randomizeButton = document.querySelector('.button__randomize');
+  const randomizeButton = document.querySelector(".button__randomize");
   randomizeButton.disabled = true;
   randomizeFields();
 
@@ -295,7 +309,9 @@ export function randomize() {
     if (iteration > 5) {
       clearInterval(interval);
 
-      document.querySelectorAll('select').forEach(({ id, value }) => setFieldLinkURL(id, value));
+      document
+        .querySelectorAll("select")
+        .forEach(({ id, value }) => setFieldLinkURL(id, value));
 
       randomizeButton.disabled = false;
     }
@@ -310,9 +326,9 @@ export function randomize() {
  * of available options in local storage within each select box.
  */
 function randomizeFields() {
-  const state = JSON.parse(localStorage.getItem('state'));
+  const state = JSON.parse(localStorage.getItem("state"));
 
-  document.querySelectorAll('select').forEach(select => {
+  document.querySelectorAll("select").forEach(select => {
     const field = select.id;
     const { isLocked } = state.fields[field];
     if (isLocked) return;
@@ -324,18 +340,18 @@ function randomizeFields() {
 }
 
 export function setLocationPath() {
-  const selectedProject = document.querySelector('#project').value;
-  const selectedPlatform = document.querySelector('#platform').value;
-  const selectedLanguage = document.querySelector('#language').value;
-  const selectedTwist = document.querySelector('#twist').value;
+  const selectedProject = document.querySelector("#project").value;
+  const selectedPlatform = document.querySelector("#platform").value;
+  const selectedLanguage = document.querySelector("#language").value;
+  const selectedTwist = document.querySelector("#twist").value;
 
   const url = new URL(window.location);
-  url.searchParams.set('project', selectedProject);
-  url.searchParams.set('platform', selectedPlatform);
-  url.searchParams.set('language', selectedLanguage);
-  url.searchParams.set('twist', selectedTwist);
+  url.searchParams.set("project", selectedProject);
+  url.searchParams.set("platform", selectedPlatform);
+  url.searchParams.set("language", selectedLanguage);
+  url.searchParams.set("twist", selectedTwist);
 
-  window.history.replaceState({}, 'constraints.app', `/?${url.searchParams}`);
+  window.history.replaceState({}, "constraints.app", `/?${url.searchParams}`);
 }
 
 /**
@@ -343,12 +359,12 @@ export function setLocationPath() {
  * distinguish between a/an preceeding the platform name.
  */
 export function buildPlatformLabel() {
-  const VOWELS = ['a', 'e', 'i', 'o', 'u'];
-  const label = document.querySelector('label[for=platform]');
-  const select = document.querySelector('select#platform');
+  const VOWELS = ["a", "e", "i", "o", "u"];
+  const label = document.querySelector("label[for=platform]");
+  const select = document.querySelector("select#platform");
   const startsWithVowel = VOWELS.includes(select.value[0].toLowerCase());
 
-  label.innerText = startsWithVowel ? 'as an:' : 'as a:';
+  label.innerText = startsWithVowel ? "as an:" : "as a:";
 }
 
 /**
@@ -357,7 +373,9 @@ export function buildPlatformLabel() {
  * @param {HTMLSelectElement} select
  */
 function setSelectWithRandomValue(select) {
-  const values = Array.from(select.querySelectorAll('option')).map(option => option.value);
+  const values = Array.from(select.querySelectorAll("option")).map(
+    option => option.value
+  );
 
   select.value = sample(values);
 }
@@ -371,4 +389,4 @@ function sample(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-document.addEventListener('DOMContentLoaded', onLoad);
+document.addEventListener("DOMContentLoaded", onLoad);
