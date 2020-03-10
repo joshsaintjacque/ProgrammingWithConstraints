@@ -1,5 +1,6 @@
 const DEFAULT_PLATFORMS = [
   { name: "Android App", isActive: true },
+  { name: "API", isActive: true },
   { name: "Browser Extension", isActive: true },
   { name: "Chat Bot", isActive: true },
   { name: "Client-Side Web App", isActive: true },
