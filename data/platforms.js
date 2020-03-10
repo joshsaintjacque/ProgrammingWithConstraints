@@ -7,6 +7,7 @@ const DEFAULT_PLATFORMS = [
   { name: "Desktop Application", isActive: true },
   { name: "Full Stack Web App", isActive: true },
   { name: "iOS App", isActive: true },
+  { name: "Library / Package", isActive: true },
   { name: "Neural Net", isActive: true },
   { name: "Reddit Bot", isActive: true },
   { name: "Serverless Function", isActive: true },
