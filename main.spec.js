@@ -35,12 +35,15 @@ describe("Main", () => {
   describe("initializeApplicationState()", () => {
     describe("when the state already exists", () => {
       it("does not overwrite the existing state", () => {
-        localStorage.setItem("state", JSON.stringify({ name: "test state" }));
+        localStorage.setItem(
+          "state",
+          JSON.stringify({ fields: {}, projects: [{ name: "test state" }] })
+        );
 
         initializeApplicationState();
 
         const newState = JSON.parse(localStorage.getItem("state"));
-        return expect(newState.name).toBe("test state");
+        return expect(newState.projects[0].name).toBe("test state");
       });
     });
 
@@ -289,7 +292,9 @@ describe("Main", () => {
     it("removes the option from state", () => {
       const state = JSON.parse(localStorage.getItem("state"));
 
-      return expect(state.languages.map(lang => lang.name)).notToContain("Go");
+      return expect(
+        state.languages.filter(lang => lang.isActive).map(lang => lang.name)
+      ).notToContain("Go");
     });
 
     it("removes the option from the select box", () => {

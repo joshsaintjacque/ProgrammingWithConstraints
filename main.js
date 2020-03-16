@@ -2,6 +2,7 @@ import initialState from "./data/initialState.js";
 
 // TODO: Add analytics
 // TODO: Handle a/an article in project label
+// TODO: Add dynamic social previews
 
 function onLoad() {
   initializeApplicationState();
@@ -13,10 +14,28 @@ function onLoad() {
 }
 
 export function initializeApplicationState() {
-  const hasExistingState = !!localStorage.getItem("state");
-  if (!hasExistingState) {
+  const currentState = JSON.parse(localStorage.getItem("state"));
+
+  if (!currentState) {
     localStorage.setItem("state", JSON.stringify(initialState));
+    return;
   }
+
+  Object.keys(initialState.fields).forEach(field => {
+    const currentOptions = currentState[`${field}s`];
+    if (!currentOptions) return;
+
+    const initialOptions = initialState[`${field}s`];
+    initialOptions.forEach(initialOption => {
+      const isInCurrentOptions = currentOptions.find(
+        currentOption => currentOption.name === initialOption.name
+      );
+      if (isInCurrentOptions) return;
+      currentOptions.push(initialOption);
+    });
+  });
+
+  localStorage.setItem("state", JSON.stringify(currentState));
 }
 
 export function initializeLocks() {
@@ -59,14 +78,16 @@ function populateFieldFromState(field) {
 
   removeAllOptionsFromSelect(select);
 
-  state[field].forEach(data => {
-    const option = document.createElement("option");
-    const text = document.createTextNode(data.name);
-    option.appendChild(text);
+  state[field]
+    .filter(option => option.isActive)
+    .forEach(data => {
+      const option = document.createElement("option");
+      const text = document.createTextNode(data.name);
+      option.appendChild(text);
 
-    option.value = data.name;
-    select.appendChild(option);
-  });
+      option.value = data.name;
+      select.appendChild(option);
+    });
 }
 
 function removeAllOptionsFromSelect(select) {
@@ -202,7 +223,7 @@ export function onDelete(event) {
   if (!confirm(`Are you sure you want to delete "${value}" from ${field}s?`))
     return;
 
-  removeOptionFromState({ field, value });
+  deactivateOption({ field, value });
   removeValueFromSelect(select);
   setLocationPath();
   setFieldLinkURL(field, select.value);
@@ -224,7 +245,10 @@ export function onAdd(event) {
 
   const state = JSON.parse(localStorage.getItem("state"));
   const newState = { ...state };
-  newState[`${field}s`] = [...newState[`${field}s`], { name: newValue }];
+  newState[`${field}s`] = [
+    ...newState[`${field}s`],
+    { name: newValue, isActive: true }
+  ];
   localStorage.setItem("state", JSON.stringify(newState));
 
   populateFieldFromState(`${field}s`);
@@ -260,12 +284,10 @@ export function onRestore(event) {
   populateFieldFromState(`${field}s`);
 }
 
-function removeOptionFromState({ field, value }) {
+function deactivateOption({ field, value }) {
   const state = JSON.parse(localStorage.getItem("state"));
-  const newOptions = state[`${field}s`].filter(option => option.name !== value);
-  const newState = { ...state };
-  newState[`${field}s`] = newOptions;
-  localStorage.setItem("state", JSON.stringify(newState));
+  state[`${field}s`].find(option => option.name === value).isActive = false;
+  localStorage.setItem("state", JSON.stringify(state));
 }
 
 export function removeValueFromSelect(select, value) {
@@ -330,7 +352,10 @@ function randomizeFields() {
 
   document.querySelectorAll("select").forEach(select => {
     const field = select.id;
-    const { isLocked } = state.fields[field];
+    const fieldMetaData = state.fields[field];
+    if (!fieldMetaData) return;
+
+    const { isLocked } = fieldMetaData;
     if (isLocked) return;
 
     setFieldLinkURL(field, select.value);
@@ -362,6 +387,7 @@ export function buildPlatformLabel() {
   const VOWELS = ["a", "e", "i", "o", "u"];
   const label = document.querySelector("label[for=platform]");
   const select = document.querySelector("select#platform");
+  if (!select.value[0]) return;
   const startsWithVowel = VOWELS.includes(select.value[0].toLowerCase());
 
   label.innerText = startsWithVowel ? "as an:" : "as a:";
